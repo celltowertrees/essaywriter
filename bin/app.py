@@ -10,13 +10,18 @@ def get_tweets(tag):
     r = requests.get('https://twitter.com/search?q=' + tag + '&src=typd')
     content = r.text
     soup = BeautifulSoup(content)
+
     for tweet in soup.find_all('p', class_="tweet-text"):
         for a in tweet.find_all('a'):
             a.decompose()
+
         print tweet.text
 
-    
 get_tweets('wombat')
+
+
+
+# takes stored tweets and returns the last 5 words
 
 def get_prompt(txt):
     sentences = txt.readlines()
@@ -24,6 +29,7 @@ def get_prompt(txt):
 
     for single in sentences:
         words = single.split()
+        
         for word in words:
             word_list.append(word)
             
@@ -31,6 +37,8 @@ def get_prompt(txt):
     
     return prompt
 
+
+# to be used for storing tweets
 
 def add(to_essay):
     prompt = get_prompt(to_essay)
