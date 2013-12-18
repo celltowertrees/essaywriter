@@ -16,7 +16,7 @@ def get_tweets(tag):
         print tweet.text
 
     
-get_tweets('garbage')
+get_tweets('wombat')
 
 def get_prompt(txt):
     sentences = txt.readlines()
