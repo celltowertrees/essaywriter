@@ -1,0 +1,8 @@
+setup.py
+bin/app.py
+twitteressays/__init__.py
+twitteressays.egg-info/PKG-INFO
+twitteressays.egg-info/SOURCES.txt
+twitteressays.egg-info/dependency_links.txt
+twitteressays.egg-info/requires.txt
+twitteressays.egg-info/top_level.txt
