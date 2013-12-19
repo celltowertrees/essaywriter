@@ -52,7 +52,7 @@ def get_tweets(tag):
     print " ".join(organize(data))
 
 
-get_tweets('bomb')
+get_tweets('Black Santa')
 
 
 
