@@ -15,7 +15,7 @@
 
       
 
-      <p class="js-tweet-text tweet-text">My biggest issue with Duck Dynasty is that it&#39;s perpetuating our acceptance of garbage as art.</p>
+      <p class="js-tweet-text tweet-text">My biggest issue with Duck Dynasty is that it&#39;s perpetuating our acceptance of <a href="#">link</a> garbage as art.</p>
 
       
       <div class="stream-item-footer">

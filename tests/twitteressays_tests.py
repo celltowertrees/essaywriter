@@ -1,16 +1,26 @@
 from nose.tools import *
-import twitteressays
+from twitteressays import app
+import os
 
-def test_extract():
-    list = []
-    stuff = open(test.txt, 'r')
-    assert_equal(extract(stuff, list), "My biggest issue with Duck Dynasty is that it&#39;s perpetuating our acceptance of garbage as art.")
 
-def setup():
-    print "SETUP!"
+TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'test.txt')
+
+
+class Test_Engine():
     
-def teardown():
-    print "TEAR DOWN!"
+    def setup(self):
+        self.list = []
+        self.stuff = open(TESTDATA_FILENAME, 'r')
+
+    def test_extract(self):
+        app.extract(self.stuff, self.list)
+        assert_equal(self.list, [u"My biggest issue with Duck Dynasty is that it's perpetuating our acceptance of  garbage as art."])
+
+    def test_organize(self):
+        app.extract(self.stuff, self.list)
+        newlist = app.organize(self.list)
+        assert_equal(newlist, [u'acceptance of garbage as art.'])
     
-def test_basic():
-    print "I RAN!"
+    def tearDown(self):
+        self.stuff.close()
+    
