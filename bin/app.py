@@ -5,52 +5,59 @@ from bs4 import BeautifulSoup
 # script, file = argv
 # essay = open(file, 'r+')
 
-def parse(stuff):
+
+# Grabs what we want from the twitter request
+
+def extract(stuff, list):
+    print "Extracting..."
     soup = BeautifulSoup(stuff)
     
     for t in soup.find_all('p', class_="tweet-text"):
         for a in t.find_all('a'):
             a.decompose()
-    
-        return t.text
-        # tweet = txt.split()
-        #return tweet
         
-        # words = " ".join(tweet[-5:])
+        words = t.text
+        list.append(words)
 
-def split(words):
-    print parse(words).split()
+
+# Takes the last 5 words of each tweet and creates a new list of those sentences
     
+def organize(l):
+    new_l = []
+    print "Organizing..."
+
+    for i in l:
+        sentence = []
+        words = i.split()
+        chopped = words[-5:]
+        
+        for w in chopped:
+            sentence.append(w)
+    
+        new_l.append(" ".join(sentence))
+
+    return new_l
+        
+
+# Fetches tweets from web scrape, and returns them as complete package
+
 def get_tweets(tag):
+    print "Getting Tweets..."
+    data = []
 
     r = requests.get('https://twitter.com/search?q=' + tag + '&src=typd')
     content = r.text
     
-    return split(content)
+    extract(content, data)
+    print " ".join(organize(data))
 
 
-get_tweets('xmas')
+get_tweets('bomb')
 
 
 
-# takes stored tweets and returns the last 5 words
 
-def get_prompt(txt):
-    sentences = txt.readlines()
-    word_list = []
-
-    for single in sentences:
-        words = single.split()
-        
-        for word in words:
-            word_list.append(word)
-            
-    prompt = " ".join(word_list[-5:])
-    
-    return prompt
-
-
-# to be used for storing tweets
+# later to be used for storing tweets
 
 def add(to_essay):
     prompt = get_prompt(to_essay)
@@ -58,5 +65,3 @@ def add(to_essay):
 
     to_essay.write(" " + new_sentence)
     to_essay.close()
-
-# add(essay)
