@@ -1,0 +1,27 @@
+   <div class="stream-item-header">
+          <a  class="account-group js-account-group js-action-profile js-user-profile-link js-nav" href="/heylauder" data-user-id="206920332">
+    <img class="avatar js-action-profile-avatar" src="https://pbs.twimg.com/profile_images/2850845085/24e1d50d0e1402e231a0969327aacf26_normal.jpeg" alt="">
+    <strong class="fullname js-action-profile-name show-popup-with-id">Harry Lauder</strong>
+    <span>&rlm;</span><span class="username js-action-profile-name"><s>@</s><b>heylauder</b></span>
+    
+
+  </a>
+
+        <small class="time">
+    <a href="/heylauder/status/413678937580240896" class="tweet-timestamp js-permalink js-nav js-tooltip" title="6:35 AM - 19 Dec 13" ><span class="_timestamp js-short-timestamp js-relative-timestamp" data-time="1387463719" data-long-form="true">11m</span></a>
+</small>
+
+      </div>
+
+      
+
+      <p class="js-tweet-text tweet-text">My biggest issue with Duck Dynasty is that it&#39;s perpetuating our acceptance of garbage as art.</p>
+
+      
+      <div class="stream-item-footer">
+          
+          
+
+
+<div class="context">
+</div>
