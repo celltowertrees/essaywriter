@@ -5,19 +5,31 @@ from bs4 import BeautifulSoup
 # script, file = argv
 # essay = open(file, 'r+')
 
+def parse(stuff):
+    soup = BeautifulSoup(stuff)
+    
+    for t in soup.find_all('p', class_="tweet-text"):
+        for a in t.find_all('a'):
+            a.decompose()
+    
+        return t.text
+        # tweet = txt.split()
+        #return tweet
+        
+        # words = " ".join(tweet[-5:])
+
+def split(words):
+    print parse(words).split()
+    
 def get_tweets(tag):
 
     r = requests.get('https://twitter.com/search?q=' + tag + '&src=typd')
     content = r.text
-    soup = BeautifulSoup(content)
+    
+    return split(content)
 
-    for tweet in soup.find_all('p', class_="tweet-text"):
-        for a in tweet.find_all('a'):
-            a.decompose()
 
-        print tweet.text
-
-get_tweets('wombat')
+get_tweets('xmas')
 
 
 
