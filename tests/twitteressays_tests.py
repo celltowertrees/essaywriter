@@ -6,7 +6,7 @@ import os
 TESTDATA_FILENAME = os.path.join(os.path.dirname(__file__), 'test.txt')
 
 
-class Test_Engine():
+class Test_Engine(object):
     
     def setup(self):
         self.list = []
