@@ -1,10 +1,14 @@
 import sys
 import requests
 import re
+import wikipedia
+from wikipedia.exceptions import WikipediaException, DisambiguationError
 from bs4 import BeautifulSoup
 from pymarkovchain import MarkovChain
 from random import choice, shuffle
 
+# TODO:
+# Add more keyword options
 
 class Writer(object):
 
@@ -12,24 +16,30 @@ class Writer(object):
         self.keyword = keyword
 
 
-    def extract_links(self, tag):
+    def extract_links(self):
         """ Find source links in article """
-        r = requests.get('http://en.wikipedia.org/wiki/' + tag)
-        # TODO: find a more flexible way of searching Wikipedia
-        soup = BeautifulSoup(r.text)
-        refs = soup.find('ol', class_="references")
-        links = []
-        try:
-            for a in refs.find_all('a', class_="external"):
-                print "Extracting links"
-                url = a['href']
-                links.append(url)
-                shuffle(links)
-                # Shuffle list and get last 5 links (don't want to overdo it at this time)
-                return links[-5:]
+        r = wikipedia.search(self.keyword) # requests.get('http://en.wikipedia.org/wiki/' + tag)
 
-        except AttributeError:
-            print "There are no sources for the keyword '%s'. Wikipedia probably didn't have an article for it." % self.keyword
+        if r:
+            if len(r) > 1:
+                shuffle(r)
+                print "Shuffling"
+                try:
+                    refs = wikipedia.WikipediaPage(r[1]).references
+
+                except (WikipediaException, DisambiguationError):
+                    print "Exception!"
+                    refs = wikipedia.WikipediaPage(r[2]).references
+
+            shuffle(refs)
+            return refs[-5:]
+
+        elif len(r) == 1:
+            refs = wikipedia.WikipediaPage(r).references
+            return refs[-5:]
+
+        else:
+            raise NameError('TRY A LITTLE BIT HARDER')
 
     
     def generateModel(self, essay):
@@ -38,11 +48,13 @@ class Writer(object):
         mc.generateDatabase(essay)
         result = r''
 
+        print "Generating:"
+
         for i in range(0, 10):
+            print "Sentence %d" % i
             # Create 10 sentences
             sentence = mc.generateString()
             result += sentence.capitalize() + '. '
-            print "Generating Model"
 
         return result
 
@@ -55,7 +67,7 @@ class Writer(object):
             # Whatever tag is passed, the text inside of it is cleaned up and inserted into a bigger string
             if soup.find(tag):
                 tag_text = ''
-                print "Reading %s" % tag
+                print "Reading..."
                 for i in soup.find_all(tag):
                     clean = i.text.strip()
                     clean = re.sub('[@#$"~+<>():/\{}_]', '', clean)
@@ -75,7 +87,6 @@ class Writer(object):
                 
                 if get_tag('p'):
                     full_article += get_tag('p')
-                    print "Got a tag."
                 else: 
                     pass
 
@@ -91,7 +102,7 @@ class Writer(object):
 
     def write(self):
         """ Generator """
-        links = self.extract_links(self.keyword)
+        links = self.extract_links()
         articles = self.read_articles(links)
         return self.generateModel(articles)
 
