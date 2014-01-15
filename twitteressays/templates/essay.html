@@ -6,7 +6,11 @@
 			{{ result }}
 		</p>
 	<form action="{{ url_for('index') }}">
-		<input class="button" type="submit" value="Different Keyword">
+		<input class="button" type="submit" value="Different Keyword" />
+	</form>
+	<form action="{{ url_for('essay') }}" method="post" class="essay">
+		<input type="hidden" name="keyword" value="{{ keyword }}" />
+		<input class="button" type="submit" value="Reload" />
 	</form>
 	</div>
 </body>
