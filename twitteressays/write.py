@@ -19,15 +19,17 @@ class Writer(object):
         soup = BeautifulSoup(r.text)
         refs = soup.find('ol', class_="references")
         links = []
+        try:
+            for a in refs.find_all('a', class_="external"):
+                print "Extracting links"
+                url = a['href']
+                links.append(url)
+                shuffle(links)
+                # Shuffle list and get last 5 links (don't want to overdo it at this time)
+                return links[-5:]
 
-        for a in refs.find_all('a', class_="external"):
-            print "Extracting links"
-            url = a['href']
-            links.append(url)
-
-        shuffle(links)
-        # Shuffle list and get last 5 links (don't want to overdo it at this time)
-        return links[-5:]
+        except AttributeError:
+            print "There are no sources for the keyword '%s'. Wikipedia probably didn't have an article for it." % self.keyword
 
     
     def generateModel(self, essay):
@@ -91,12 +93,7 @@ class Writer(object):
         """ Generator """
         links = self.extract_links(self.keyword)
         articles = self.read_articles(links)
-        print self.generateModel(articles)
-
-
-writer = Writer('Mark Zuckerberg')
-writer.write()
-
+        return self.generateModel(articles)
 
 
 
