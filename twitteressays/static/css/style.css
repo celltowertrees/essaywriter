@@ -1,0 +1,102 @@
+/* line 11, ../../../../../Desktop/lib/sass/style.scss */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 17, ../../../../../Desktop/lib/sass/style.scss */
+body, html {
+  padding: 0.5em;
+  margin: 0.5em;
+  font-size: 1em;
+  font-family: Georgia, "Palatino Linotype", Palatino, serif;
+  color: #454545;
+  line-height: 2.5em;
+}
+
+/* line 26, ../../../../../Desktop/lib/sass/style.scss */
+main {
+  text-align: center;
+  margin: 0 auto;
+  /*
+  min-height:100%;
+  border:#000 1px solid;
+  .attention {
+  	top: 50%; 
+  	transform: translateY(-50%);
+  	border:#000 1px solid;
+  }
+  */
+}
+
+/* line 40, ../../../../../Desktop/lib/sass/style.scss */
+main.results {
+  padding: 2em;
+  border: #787878 2px solid;
+}
+/* line 43, ../../../../../Desktop/lib/sass/style.scss */
+main.results h2 {
+  text-transform: uppercase;
+  font-size: 1em;
+  color: #787878;
+}
+
+/*Normal state*/
+/* line 53, ../../../../../Desktop/lib/sass/style.scss */
+input[type="email"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="url"], input[type="color"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="time"], input[type="week"],
+textarea,
+select {
+  border: #787878 1px solid;
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+/*:hover and :focus states*/
+/* line 64, ../../../../../Desktop/lib/sass/style.scss */
+input[type="email"]:hover, input[type="number"]:hover, input[type="password"]:hover, input[type="search"]:hover, input[type="tel"]:hover, input[type="text"]:hover, input[type="url"]:hover, input[type="color"]:hover, input[type="date"]:hover, input[type="datetime"]:hover, input[type="datetime-local"]:hover, input[type="month"]:hover, input[type="time"]:hover, input[type="week"]:hover, input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus,
+textarea:hover,
+textarea:focus,
+select:hover,
+select:focus {
+  border: #787878 1px solid;
+}
+
+/* line 68, ../../../../../Desktop/lib/sass/style.scss */
+input[type="submit"] {
+  border: #787878 1px solid;
+  color: #fff;
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: #787878;
+}
+/* line 74, ../../../../../Desktop/lib/sass/style.scss */
+input[type="submit"]:hover, input[type="submit"]:focus {
+  background-color: #858585;
+  border: #858585 1px solid;
+}
+
+/* line 81, ../../../../../Desktop/lib/sass/style.scss */
+menu.choice form {
+  display: inline;
+}
+/* line 84, ../../../../../Desktop/lib/sass/style.scss */
+menu.choice input[type="submit"] {
+  margin: 0.5em 0;
+  font-size: .85em;
+}
+
+/* line 90, ../../../../../Desktop/lib/sass/style.scss */
+form.essay {
+  display: block;
+  width: 15em;
+  margin: 0 auto;
+}
+/* line 94, ../../../../../Desktop/lib/sass/style.scss */
+form.essay input[type="submit"] {
+  margin: 0;
+}
+/* line 97, ../../../../../Desktop/lib/sass/style.scss */
+form.essay input[type="email"], form.essay input[type="number"], form.essay input[type="password"], form.essay input[type="search"], form.essay input[type="tel"], form.essay input[type="text"], form.essay input[type="url"], form.essay input[type="color"], form.essay input[type="date"], form.essay input[type="datetime"], form.essay input[type="datetime-local"], form.essay input[type="month"], form.essay input[type="time"], form.essay input[type="week"] {
+  margin: 0;
+}
