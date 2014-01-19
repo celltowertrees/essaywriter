@@ -1,12 +1,18 @@
 <html>
+	<head>
+		<title>ESSAY GENERATOR</title>
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+	</head>
 <body>
-	<div align="center" style="padding-top:20px;">
-		<h2>Essay Generator</h2>
-		<p>Never fail another college course again.</p>
-		<form action="{{ url_for('essay') }}" method="post" class="essay">
-			<input name="keyword" placeholder="Keyword" type="text" />
-			<input class="button" type="submit" value="Write">
-		</form>
-	</div>
+	<main class="main">
+		<div class="attention">
+			<h2>Essay Generator</h2>
+			<p>Never fail another college course again.</p>
+			<form action="{{ url_for('essay') }}" method="post" class="essay">
+				<input name="keyword" placeholder="Keyword" type="text" />
+				<input class="button" type="submit" value="Write">
+			</form>
+		</div>
+	</main>
 </body>
 </html>
