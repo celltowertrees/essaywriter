@@ -2,6 +2,7 @@ import sys
 import requests
 import re
 import wikipedia
+import nltk
 from wikipedia.exceptions import WikipediaException, DisambiguationError
 from bs4 import BeautifulSoup
 from pymarkovchain import MarkovChain
@@ -9,11 +10,13 @@ from random import choice, shuffle
 
 # TODO:
 # Add more keyword options
+# Article citations
 
 class Writer(object):
 
     def __init__(self, keyword):
         self.keyword = keyword
+        self.links = self.extract_links()
 
 
     def extract_links(self):
@@ -27,7 +30,7 @@ class Writer(object):
                 try:
                     refs = wikipedia.WikipediaPage(r[1]).references
 
-                except (WikipediaException, DisambiguationError):
+                except (WikipediaException, DisambiguationError, KeyError):
                     print "Exception!"
                     refs = wikipedia.WikipediaPage(r[2]).references
 
@@ -69,8 +72,8 @@ class Writer(object):
                 tag_text = ''
                 print "Reading..."
                 for i in soup.find_all(tag):
-                    clean = i.text.strip()
-                    clean = re.sub('[@#$"~+<>():/\{}_]', '', clean)
+                    clean = i.text
+                    clean = re.sub('[@#$"~+<>():/\{}_]', '', clean).strip()
                     tag_text += clean
                 return tag_text
             else:
@@ -102,8 +105,7 @@ class Writer(object):
 
     def write(self):
         """ Generator """
-        links = self.extract_links()
-        articles = self.read_articles(links)
+        articles = self.read_articles(self.links)
         return self.generateModel(articles)
 
 
