@@ -20,7 +20,7 @@ def essay():
 	essay = Writer(keyword)
 	result = essay.write()
 
-	return render_template('essay.html', result=result, keyword=keyword)
+	return render_template('essay.html', result=result, essay=essay, keyword=keyword)
 
 
 if __name__ == '__main__':
