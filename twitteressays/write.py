@@ -3,6 +3,7 @@ import requests
 import re
 import wikipedia
 import nltk
+
 from wikipedia.exceptions import WikipediaException, DisambiguationError
 from bs4 import BeautifulSoup
 from pymarkovchain import MarkovChain
@@ -10,7 +11,7 @@ from random import choice, shuffle
 
 # TODO:
 # Add more keyword options
-# Article citations
+# Separate into more modules with more options
 
 class Writer(object):
 
@@ -62,6 +63,20 @@ class Writer(object):
         return result
 
 
+    def analyze(self, text):
+        tokens = nltk.word_tokenize(text)
+        adjectives = []
+
+        for word, pos in nltk.pos_tag(tokens):
+            if word in adjectives:
+                pass
+            else:
+                if pos in ['VB']:
+                    adjectives.append(word)
+
+        return adjectives
+
+
     def read_articles(self, link_list):
         """ Request articles, inspect markup for any important strings, and return them, cleaned """
         info = ''
@@ -75,6 +90,7 @@ class Writer(object):
                     clean = i.text
                     clean = re.sub('[@#$"~+<>():/\{}_]', '', clean).strip()
                     tag_text += clean
+                    # If the text contains the keyword, tokenize it.
                 return tag_text
             else:
                 pass
@@ -106,7 +122,7 @@ class Writer(object):
     def write(self):
         """ Generator """
         articles = self.read_articles(self.links)
-        return self.generateModel(articles)
+        return self.analyze(articles)
 
 
 
