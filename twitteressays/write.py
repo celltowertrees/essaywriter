@@ -17,11 +17,30 @@ class Writer(object):
 
     def __init__(self, keyword):
         self.keyword = keyword
-        self.links = self.extract_links()
+        self.links = self.extract_links_wikipedia()
 
 
-    def extract_links(self):
-        """ Find source links in article """
+    def extract_links_text(self, file):
+        """ Reads from a text file of source links. Returns the links in a list. """
+        links = []
+
+        with open(file, "r") as file_obj:
+            lines = file_obj.read()
+
+            try:
+                links = lines.split('\n')
+            except AttributeError:
+                links = lines
+
+            for line in lines:
+                links.append(line)
+
+        return links
+
+
+
+    def extract_links_wikipedia(self):
+        """ Find source links in a Wikipedia article. """
         r = wikipedia.search(self.keyword) # requests.get('http://en.wikipedia.org/wiki/' + tag)
 
         if r:
