@@ -66,7 +66,8 @@ class Writer(object):
 
     
     def generateModel(self, essay):
-        """ Generate a Markov chain based on retrieved strings """
+        """ Generate a Markov chain based on retrieved strings. """
+
         mc = MarkovChain()
         mc.generateDatabase(essay)
         result = r''
@@ -83,6 +84,8 @@ class Writer(object):
 
 
     def analyze(self, text):
+        """ Takes a collection of adjectives using NLTK tokenizer. """
+
         tokens = nltk.word_tokenize(text)
         adjectives = []
 
@@ -98,6 +101,7 @@ class Writer(object):
 
     def read_articles(self, link_list):
         """ Request articles, inspect markup for any important strings, and return them, cleaned """
+        
         info = ''
 
         def get_tag(tag):
