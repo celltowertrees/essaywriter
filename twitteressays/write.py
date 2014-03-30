@@ -22,7 +22,7 @@ class Writer(object):
         self.links = self.extract_links_wikipedia()
 
     def stripWords(words):
-        text = string.replace('"', '')
+        text = words.replace('"', '')
         return text
 
     def extract_links_text(self, file):
@@ -95,6 +95,7 @@ class Writer(object):
         adjectives = []
         nouns = []
         verbs = []
+        print "Sorting words..."
 
         for word, pos in nltk.pos_tag(tokens):
             if pos in ['VB']:
