@@ -21,6 +21,10 @@ class Writer(object):
         self.keyword = keyword
         self.links = self.extract_links_wikipedia()
 
+    def stripWords(words):
+        text = string.replace('"', '')
+        return text
+
     def extract_links_text(self, file):
         """
         Reads from a text file of source links.
@@ -43,7 +47,8 @@ class Writer(object):
 
     def extract_links_wikipedia(self):
         """ Find source links in a Wikipedia article. """
-        r = wikipedia.search(self.keyword) # requests.get('http://en.wikipedia.org/wiki/' + tag)
+        r = wikipedia.search(self.keyword)
+        # requests.get('http://en.wikipedia.org/wiki/' + tag)
 
         if r:
             if len(r) > 1:
@@ -120,7 +125,7 @@ class Writer(object):
 
         def get_tag(tag):
             # Whatever tag is passed, the text inside of it is cleaned up a
-            # nd inserted into a bigger string
+            # nd inserted into tag_text
             if soup.find(tag):
                 tag_text = ''
                 print "Reading..."
@@ -128,7 +133,6 @@ class Writer(object):
                     clean = i.text
                     clean = re.sub('[@#$"~+<>():/\{}_]', '', clean).strip()
                     tag_text += clean
-                    # If the text contains the keyword, tokenize it.
                 return tag_text
             else:
                 pass
@@ -172,9 +176,4 @@ def extract_tweets(tag):
             a.decompose()
         text += t.text + ' '
 
-    return text
-
-
-def formatString(string):
-    text = string.replace('"', '')
     return text
