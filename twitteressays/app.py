@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect
-from write import Writer
+from write import MarkovWriter, Tweets
 
 
 app = Flask(__name__)
@@ -18,16 +18,14 @@ def essay():
     if not keyword:
         return redirect(url_for('index'))
 
-    essay = Writer(keyword)
-    result = essay.write()
-    # verbs = result[verbs]
-    # adjectives = result[adjectives]
-    # nouns = result[nouns]
+    t = Tweets(keyword)
+    text = t.extract_tweets()
+    m = MarkovWriter(text)
+    result = m.generateModel()
 
-    return render_template('essay.html',
-        essay=essay,
-        result=result,
-        keyword=keyword)
+    markov = True
+
+    return render_template('essay.html', result=result, markov=markov, keyword=keyword)
 
 
 if __name__ == '__main__':

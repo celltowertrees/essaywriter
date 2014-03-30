@@ -7,19 +7,18 @@
 	<main class="results">
 		<h2>{{ keyword }}</h2>
 		<p>
-			{% for r in result %}
-				<div class="pos">
-					{% for words in r %}
-						{{ words }}
-					{% endfor %}
-				</div>
-			{% endfor %}
+			{% if markov %}
+				{{ result }}
+			{% else %}
+				{% for r in result %}
+					<div class="pos">
+						{% for words in r %}
+							{{ words }}
+						{% endfor %}
+					</div>
+				{% endfor %}
+			{% endif %}
 		</p>
-		<ol>
-			{% for link in essay.links %}
-				<li>{{ link }}</li>
-			{% endfor %}
-		</ol>
 		<menu class="choice">
 			<form action="{{ url_for('index') }}">
 				<input class="button" type="submit" value="Different Keyword" />

@@ -1,4 +1,4 @@
-import sys
+# import sys
 import requests
 import re
 import wikipedia
@@ -10,72 +10,50 @@ from pymarkovchain import MarkovChain
 from random import choice, shuffle
 
 
-# TODO:
-# Add more keyword options
-# Separate into more modules with more options
+def soup_tag(tag, text):
+    # Whatever tag is passed, the text inside of it is BeautifulSouped
+    # and inserted into tag_text string
+    soup = BeautifulSoup(text)
+    if soup.body.find(tag):
+        tag_text = ''
+        print "Reading..."
+        for i in soup.find_all(tag):
+            clean = i.text
+            clean = re.sub('[@#$"~+<>():/\{}_]', '', clean).strip()
+            tag_text += clean + ' '
+        return tag_text
+    else:
+        pass
 
 
-class Writer(object):
+def read_link_list(link_list):
+    # Requests from a list of URLs.
+    info = ''
+    for url in link_list:
+        # Each URL gets its own string of returned text
+        full_article = ''
+        try:
+            r = requests.get(url, timeout=5)
+            print "Opening article"
+            if soup_tag('p', r.text):
+                full_article += soup_tag('p', r.text)
+            else:
+                pass
+        except requests.exceptions.RequestException:
+            print "Request Error!"
+        info += full_article
+    return info
 
-    def __init__(self, keyword):
-        self.keyword = keyword
-        self.links = self.extract_links_wikipedia()
 
-    def stripWords(words):
-        text = words.replace('"', '')
-        return text
+class MarkovWriter(object):
+    def __init__(self, text):
+        self.text = text
 
-    def extract_links_text(self, file):
-        """
-        Reads from a text file of source links.
-        Returns the links in a list.
-        """
-        links = []
-
-        with open(file, "r") as file_obj:
-            lines = file_obj.read()
-
-            try:
-                links = lines.split('\n')
-                for line in lines:
-                    links.append(line)
-
-            except AttributeError:
-                print "No."
-
-        return links
-
-    def extract_links_wikipedia(self):
-        """ Find source links in a Wikipedia article. """
-        r = wikipedia.search(self.keyword)
-        # requests.get('http://en.wikipedia.org/wiki/' + tag)
-
-        if r:
-            if len(r) > 1:
-                shuffle(r)
-                print "Shuffling"
-                try:
-                    refs = wikipedia.WikipediaPage(r[1]).references
-
-                except (WikipediaException, DisambiguationError, KeyError):
-                    print "Exception!"
-                    refs = wikipedia.WikipediaPage(r[2]).references
-
-            shuffle(refs)
-            return refs[-5:]
-
-        elif len(r) == 1:
-            refs = wikipedia.WikipediaPage(r).references
-            return refs[-5:]
-
-        else:
-            raise NameError('TRY A LITTLE BIT HARDER')
-
-    def generateModel(self, essay):
+    def generateModel(self):
         """ Generate a Markov chain based on retrieved strings. """
 
         mc = MarkovChain()
-        mc.generateDatabase(essay)
+        mc.generateDatabase(self.text)
         result = r''
 
         print "Generating:"
@@ -88,10 +66,15 @@ class Writer(object):
 
         return result
 
-    def analyze(self, text):
+
+class PosSorter(object):
+    def __init__(self, text):
+        self.text = text
+
+    def analyze(self):
         """ Takes a collection of adjectives using NLTK tokenizer. """
 
-        tokens = nltk.word_tokenize(text)
+        tokens = nltk.word_tokenize(self.text)
         adjectives = []
         nouns = []
         verbs = []
@@ -116,65 +99,73 @@ class Writer(object):
 
         return verbs, adjectives, nouns
 
-    def read_articles(self, link_list):
-        """
-        Request articles,
-        inspect markup for any important strings,
-        and return them, cleaned
-        """
-        info = ''
 
-        def soup_tag(tag, req):
-            # Whatever tag is passed, the text inside of it is BeautifulSouped
-            # and inserted into tag_text string
-            soup = BeautifulSoup(req.text)
-            if soup.body.find(tag):
-                tag_text = ''
-                print "Reading..."
-                for i in soup.find_all(tag):
-                    clean = i.text
-                    clean = re.sub('[@#$"~+<>():/\{}_]', '', clean).strip()
-                    tag_text += clean + ' '
-                return tag_text
+class Tweets(object):
+    def __init__(self, tag):
+        self.tag = tag
+
+    def extract_tweets(self):
+        r = requests.get('https://twitter.com/search?q=' + self.tag + '&src=typd')
+        soup = BeautifulSoup(r.text)
+        text = ''
+        for t in soup.find_all('p', class_="tweet-text"):
+            for a in t.find_all('a'):
+                a.decompose()
+            text += t.text + ' '
+        return text
+
+
+class Wikipedia(object):
+    def __init__(self, tag):
+        self.tag = tag
+
+    def extract_wikipedia_sources(self):
+        # Find source links in a Wikipedia article. Returns a link list.
+        r = wikipedia.search(self.tag)
+        print "Wikipedia is doing something!"
+        if r:
+            if len(r) > 1:
+                shuffle(r)
+                print "Shuffling"
+                try:
+                    refs = wikipedia.WikipediaPage(r[1]).references
+                except (WikipediaException, DisambiguationError, KeyError):
+                    print "Exception!"
+                    refs = wikipedia.WikipediaPage(r[2]).references
+                shuffle(refs)
+                result = read_link_list(refs[-5:])
+                print "Wikipedia returned the result"
+                return result
+            elif len(r) == 1:
+                refs = wikipedia.WikipediaPage(r).references
+                result = read_link_list(refs[-5:])
+                print "Wikipedia returned the result"
+                return result
             else:
-                pass
+                raise NameError('TRY A LITTLE BIT HARDER')
 
-        for url in link_list:
-            # Each URL gets its own string of returned text
-            full_article = ''
 
+class TextFile(object):
+    def __init__(self, file):
+        self.file = file
+
+    def read_text(self):
+        with open(self.file, "r") as file_obj:
+            words = file_obj.read()
+            return words
+
+    def extract_links_text(self):
+        # Reads from a text file of source links.
+        links = []
+        with open(self.file, "r") as file_obj:
+            lines = file_obj.read()
             try:
-                r = requests.get(url, timeout=5)
-                print "Opening article"
+                links = lines.split('\n')
+                for line in lines:
+                    links.append(line)
+            except AttributeError:
+                print "No."
+        result = read_link_list(links)
+        return result
 
-                if soup_tag('p', r):
-                    full_article += soup_tag('p', r)
-                else:
-                    pass
-
-            except requests.exceptions.RequestException:
-                print "Request Error!"
-
-            info += full_article
-
-        return info
-
-    # Generates essay
-    def write(self):
-        """ Generator """
-        articles = self.read_articles(self.links)
-        return self.analyze(articles)
-
-
-#------------OLD SHIT----------------
-
-def extract_tweets(tag):
-    r = requests.get('https://twitter.com/search?q=' + tag + '&src=typd')
-    soup = BeautifulSoup(r.text)
-    text = ''
-    for t in soup.find_all('p', class_="tweet-text"):
-        for a in t.find_all('a'):
-            a.decompose()
-        text += t.text + ' '
-
-    return text
+# class Craigslist(object):
