@@ -8,7 +8,11 @@
 		<h2>{{ keyword }}</h2>
 		<p>
 			{% for r in result %}
-				{{ r }}
+				<div class="pos">
+					{% for words in r %}
+						{{ words }}
+					{% endfor %}
+				</div>
 			{% endfor %}
 		</p>
 		<ol>

@@ -88,15 +88,27 @@ class Writer(object):
 
         tokens = nltk.word_tokenize(text)
         adjectives = []
+        nouns = []
+        verbs = []
 
         for word, pos in nltk.pos_tag(tokens):
-            if word in adjectives:
-                pass
-            else:
-                if pos in ['VB']:
+            if pos in ['VB']:
+                if word not in verbs:
+                    verbs.append(word)
+                else:
+                    pass
+            elif pos in ['JJ']:
+                if word not in adjectives:
                     adjectives.append(word)
+                else:
+                    pass
+            elif pos in ['NN']:
+                if word not in nouns:
+                    nouns.append(word)
+                else:
+                    pass
 
-        return adjectives
+        return verbs, adjectives, nouns
 
     def read_articles(self, link_list):
         """
