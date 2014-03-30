@@ -123,16 +123,17 @@ class Writer(object):
         """
         info = ''
 
-        def get_tag(tag):
-            # Whatever tag is passed, the text inside of it is cleaned up a
-            # nd inserted into tag_text
-            if soup.find(tag):
+        def soup_tag(tag, req):
+            # Whatever tag is passed, the text inside of it is BeautifulSouped
+            # and inserted into tag_text string
+            soup = BeautifulSoup(req.text)
+            if soup.body.find(tag):
                 tag_text = ''
                 print "Reading..."
                 for i in soup.find_all(tag):
                     clean = i.text
                     clean = re.sub('[@#$"~+<>():/\{}_]', '', clean).strip()
-                    tag_text += clean
+                    tag_text += clean + ' '
                 return tag_text
             else:
                 pass
@@ -144,10 +145,9 @@ class Writer(object):
             try:
                 r = requests.get(url, timeout=5)
                 print "Opening article"
-                soup = BeautifulSoup(r.text)
 
-                if get_tag('p'):
-                    full_article += get_tag('p')
+                if soup_tag('p', r):
+                    full_article += soup_tag('p', r)
                 else:
                     pass
 
