@@ -9,6 +9,10 @@
 			<h2>Essay Generator</h2>
 			<form action="{{ url_for('essay') }}" method="post" class="essay">
 				<input name="keyword" placeholder="Keyword" type="text" />
+				<ul class="writer-choice">
+					<li><input type="radio" name="writer_type" value="PosSorter" />POS Sort</li>
+					<li><input type="radio" name="writer_type" value="MarkovWriter" />Markov</li>
+				</ul>
 				<input class="button" type="submit" value="Write">
 			</form>
 		</div>

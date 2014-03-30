@@ -51,7 +51,8 @@ class MarkovWriter(object):
     def __init__(self, text):
         self.text = text
 
-    def generateModel(self):
+    def analyze(self):
+        # GenerateModel
         """ Generate a Markov chain based on retrieved strings. """
 
         mc = MarkovChain()
