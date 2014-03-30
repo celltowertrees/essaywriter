@@ -41,6 +41,8 @@ def read_link_list(link_list):
                 pass
         except requests.exceptions.RequestException:
             print "Request Error!"
+        except requests.packages.urllib3.exceptions.LocationParseError:
+            print "Location Parse Error!"
         info += full_article
     return info
 
@@ -146,18 +148,20 @@ class Wikipedia(object):
 
 
 class TextFile(object):
-    def __init__(self, file):
-        self.file = file
+    def __init__(self, file_, tag):
+        self.file_ = file_
+        self.tag = tag
+        # Doesn't actually do anything with the tag yet.
 
     def read_text(self):
-        with open(self.file, "r") as file_obj:
+        with open(self.file_, "r") as file_obj:
             words = file_obj.read()
             return words
 
     def extract_links_text(self):
         # Reads from a text file of source links.
         links = []
-        with open(self.file, "r") as file_obj:
+        with open(self.file_, "r") as file_obj:
             lines = file_obj.read()
             try:
                 links = lines.split('\n')
