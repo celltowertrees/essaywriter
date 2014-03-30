@@ -6,6 +6,7 @@
 <body>
 	<main class="results">
 		<h2>{{ keyword }}</h2>
+		<h3>Written by {{ choice }}</h3>
 		<p>
 			{% if markov %}
 				{{ result }}
@@ -21,10 +22,11 @@
 		</p>
 		<menu class="choice">
 			<form action="{{ url_for('index') }}">
-				<input class="button" type="submit" value="Different Keyword" />
+				<input class="button" type="submit" value="Change Settings" />
 			</form>
 			<form action="{{ url_for('essay') }}" method="post" class="essay">
 				<input type="hidden" name="keyword" style="display:none;" value="{{ keyword }}" />
+				<input type="hidden" name="writer_type" style="display:none;" value="{{ choice }}" />
 				<input class="button" type="submit" value="Reload" />
 			</form>
 		</menu>

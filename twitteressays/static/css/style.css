@@ -27,8 +27,17 @@ main.results {
 
 main.results h2 {
   text-transform: uppercase;
-  font-size: 1em;
+  font-size: 1.5em;
   color: #787878;
+  margin-bottom: 0px;
+}
+
+main.results h3 {
+  font-size: 1em;
+  color: #434343;
+  font-family: 'Source Code Pro', sans-serif;
+  font-weight: 400;
+  margin-top: 0px;
 }
 
 main.results div.pos {

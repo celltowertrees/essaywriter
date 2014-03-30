@@ -32,7 +32,7 @@ def essay():
 
         result = c.analyze()
 
-    return render_template('essay.html', result=result, markov=markov, keyword=keyword)
+    return render_template('essay.html', result=result, choice=choice, markov=markov, keyword=keyword)
 
 
 if __name__ == '__main__':
