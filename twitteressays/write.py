@@ -180,12 +180,12 @@ class TextFile(object):
     # iterate through cover letters folder for interesting testing
         result = ''
         dirs = os.listdir(PATH)
-        # for files in os.walk(ROOT):
         for file in dirs:
-            print "A file has been noticed"
-            with open(PATH + '/' + file, 'r') as file_obj:
-                lines = file_obj.read()
-                result += lines + ''
+            if file.endswith(".txt"):
+                print "A file has been noticed"
+                with open(PATH + '/' + file, 'r') as file_obj:
+                    lines = file_obj.read()
+                    result += lines + ''
         return result
 
 
