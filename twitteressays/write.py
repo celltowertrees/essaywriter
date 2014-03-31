@@ -1,4 +1,5 @@
 # import sys
+import os
 import requests
 import re
 import wikipedia
@@ -8,6 +9,9 @@ from wikipedia.exceptions import WikipediaException, DisambiguationError
 from bs4 import BeautifulSoup
 from pymarkovchain import MarkovChain
 from random import choice, shuffle
+
+
+PATH = 'coverletters'
 
 
 def soup_tag(tag, text):
@@ -149,28 +153,55 @@ class Wikipedia(object):
 
 
 class TextFile(object):
-    def __init__(self, file_, tag):
-        self.file_ = file_
+    def __init__(self, tag):
         self.tag = tag
         # Doesn't actually do anything with the tag yet.
 
-    def read_text(self):
-        with open(self.file_, "r") as file_obj:
+    def read_text(self, file_):
+        with open(file_, "r") as file_obj:
             words = file_obj.read()
             return words
 
-    def extract_links_text(self):
+    def extract_links_text(self, file_):
         # Reads from a text file of source links.
         links = []
-        with open(self.file_, "r") as file_obj:
-            lines = file_obj.read()
-            try:
-                links = lines.split('\n')
-                for line in lines:
-                    links.append(line)
-            except AttributeError:
-                print "No."
+        with open(file_, "r") as file_obj:
+            lines = file_obj.readlines()
+            # try:
+            #     links = lines.split('\n')
+            for line in lines:
+                links.append(line)
+            # except AttributeError:
+            #     print "No."
         result = read_link_list(links)
         return result
 
-# class Craigslist(object):
+    def iterate_dir(self):
+    # iterate through cover letters folder for interesting testing
+        result = ''
+        dirs = os.listdir(PATH)
+        # for files in os.walk(ROOT):
+        for file in dirs:
+            print "A file has been noticed"
+            with open(PATH + '/' + file, 'r') as file_obj:
+                lines = file_obj.read()
+                result += lines + ''
+        return result
+
+
+class Craigslist(object):
+    def __init__(self, tag):
+        self.tag = tag
+
+    def extract_posts(self):
+        r = requests.get('http://newyork.craigslist.org/search/mis?zoomToPosting=&catAbb=mis&query=' + self.tag + '&minAsk=&maxAsk=&excats=')
+        # It won't always be NY Missed Connections
+        soup = BeautifulSoup(r.text)
+        # body = soup.div(class_="content")
+        links = []
+        for l in soup.find_all('a', class_="i"):
+            url = l.get('href')
+            print url
+            links.append(url)
+        result = read_link_list(links)
+        return result

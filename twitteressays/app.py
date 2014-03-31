@@ -20,8 +20,8 @@ def essay():
         if not keyword or not choice:
             return redirect(url_for('index'))
 
-        t = TextFile("usability_testing.txt", keyword)
-        text = t.read_text()
+        t = TextFile(keyword)
+        text = t.iterate_dir()
 
         if choice == 'PosSorter':
             c = PosSorter(text)
