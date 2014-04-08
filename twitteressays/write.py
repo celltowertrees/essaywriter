@@ -11,6 +11,12 @@ from pymarkovchain import MarkovChain
 from random import choice, shuffle
 
 
+# TODO:
+# 1. Implement Scrapely, Scrapy, (Mechanize?)
+# 2. Module Files
+# 3. Choices for source (frontend)
+
+
 PATH = 'coverletters'
 
 
